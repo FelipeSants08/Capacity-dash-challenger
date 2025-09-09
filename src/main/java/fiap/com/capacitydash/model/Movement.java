@@ -1,25 +1,29 @@
 package fiap.com.capacitydash.model;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ParkingSpace {
+public class Movement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long parkingSpaceId;
+    private Long idMovement;
 
-    private String code;
+    @ManyToOne
+    private Motorcycle motorcycle;
 
-    private SpaceStatus spaceStatus;
+    @ManyToOne
+    private ParkingSpace parkingSpace;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Department department;
+    private LocalDateTime dateTime;
 
 }
