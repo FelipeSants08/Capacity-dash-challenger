@@ -17,9 +17,12 @@ public class ParkingSpace {
 
     private String code;
 
-    private SpaceStatus spaceStatus;
+    private Boolean occupied;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "department_id")
     private Department department;
 
+    @OneToOne(mappedBy = "parkingSpace")
+    private Motorcycle motorcycle;
 }

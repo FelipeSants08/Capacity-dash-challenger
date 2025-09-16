@@ -25,4 +25,11 @@ public class DepartamentService {
         return departamentRepository.findAll();
     }
 
+
+    public Department findDepartmentById(Long id){
+        return departamentRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("ID não encontrado!")
+        );
+    }
+
 }

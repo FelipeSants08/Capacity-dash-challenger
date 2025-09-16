@@ -24,6 +24,6 @@ public class Movement {
     @ManyToOne
     private ParkingSpace parkingSpace;
 
-    private LocalDateTime dateTime;
+    private LocalDateTime dateTimeMovement;
 
 }

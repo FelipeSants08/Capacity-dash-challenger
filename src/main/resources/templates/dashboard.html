@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-theme="halloween">
+<head>
+    <meta charset="UTF-8">
+    <title>DashBoard Mottu</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="p-8">
+<main class="container mx-auto max-w-6xl p-8 rounded-lg shadow-xl">
+    <h1 class="text-4xl font-bold text-center mb-10">Dashboard Mottu</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div th:each="department : ${departments}" class="card w-full bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 th:text="${department.name}" class="card-title text-2xl">Nome do Departamento</h2>
+                <p th:text="${department.description}">Descrição</p>
+
+                <div th:if="${!#lists.isEmpty(department.alerts)}" class="alert alert-error mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <span>Alertas Ativos: <span th:text="${#lists.size(department.alerts)}" class="badge badge-lg badge-error font-normal"></span></span>
+                </div>
+                <div th:if="${#lists.isEmpty(department.alerts)}" class="alert alert-success mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <span>Nenhum Alerta Encontrado</span>
+                </div>
+
+                <div class="collapse collapse-plus bg-base-200 mt-4">
+                    <input type="checkbox" th:id="'collapse-trigger-' + ${department.id}" />
+                    <div class="collapse-title text-xl font-medium">
+                        Ver Vagas
+                    </div>
+                    <div class="collapse-content">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="w-4 h-4 bg-success rounded-full"></div>
+                            <span>Livre</span>
+                            <div class="w-4 h-4 bg-error rounded-full ml-4"></div>
+                            <span>Ocupada</span>
+                        </div>
+
+                        <div class="flex flex-wrap gap-4">
+                            <div th:each="parking : ${department.parkingSpaces}"
+                                 th:classappend="${parking.occupied} ? 'badge-error' : 'badge-success'"
+                                 class="badge badge-lg text-white p-4 text-center">
+                                <p class="font-bold text-lg" th:text="${parking.code}"></p>
+                                <p class="text-sm" th:text="${parking.occupied} ? 'Ocupada' : 'Livre'"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <a th:href="@{'/dashboard/' + ${department.id}}" class="mt-4 inline-block w-full text-center px-4 py-2 btn btn-primary">
+                        Ver detales do Departamento
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
