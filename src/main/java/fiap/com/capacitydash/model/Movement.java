@@ -18,6 +18,9 @@ public class Movement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idMovement;
 
+    @Enumerated(EnumType.STRING)
+    private MovementType type;
+
     @ManyToOne
     private Motorcycle motorcycle;
 

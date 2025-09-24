@@ -17,5 +17,22 @@ public class ParkingSpaceService {
         return parkingSpaceRepository.findAll();
     }
 
+    public ParkingSpace findById(Long idParkingSpace) {
+        return parkingSpaceRepository.findById(idParkingSpace)
+                .orElseThrow(() -> new RuntimeException("ID não encontrado"));
+    }
+
+    public void verificarOcupacao(Long idParkingSpace) {
+        ParkingSpace parkingSpace = findById(idParkingSpace);
+        if (parkingSpace.getMotorcycle() != null){
+            parkingSpace.setOccupied(true);
+        }
+        else {
+            parkingSpace.setOccupied(false);
+        }
+        parkingSpaceRepository.save(parkingSpace);
+    }
+
+
 
 }
