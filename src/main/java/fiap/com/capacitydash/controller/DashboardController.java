@@ -1,9 +1,7 @@
 package fiap.com.capacitydash.controller;
 
 import fiap.com.capacitydash.model.Department;
-import fiap.com.capacitydash.service.AlertService;
-import fiap.com.capacitydash.service.DepartamentService;
-import fiap.com.capacitydash.service.ParkingSpaceService;
+import fiap.com.capacitydash.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,22 +16,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DashboardController {
 
+    private final QrCodeService qrCode;
     private final DepartamentService departamentService;
     private final AlertService alertService;
     private final ParkingSpaceService parkingSpaceService;
+    private final MotorcycleService motorcycleService;
 
     @GetMapping
     public String index(Model model){
-        List<Department> departments = departamentService.findAllDepartments();
+        var departments = departamentService.findAllDepartments();
         var alerts = alertService.getAllAlerts();
+        var motorcycles = motorcycleService.getAllMotorcycles();
         var parking = parkingSpaceService.findAll();
         model.addAttribute("departments", departments);
         model.addAttribute("alerts", alerts);
         model.addAttribute("parking", parking);
+        model.addAttribute("motorcycles", motorcycles);
         return "dashboard";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/details/{id}")
     public String departmentDetails(@PathVariable Long id, Model model){
         var department = departamentService.findDepartmentById(id);
 
@@ -45,9 +47,22 @@ public class DashboardController {
         var alerts = alertService.getAllAlerts();
 
         model.addAttribute("department", department);
-        model.addAttribute("allParkingSpaces", parkingSpaces); // Renomeei para evitar conflito
-        model.addAttribute("allAlerts", alerts); // Renomeei para evitar conflito
+        model.addAttribute("allParkingSpaces", parkingSpaces);
+        model.addAttribute("allAlerts", alerts);
         return "dashboard-details";
+    }
+
+    @GetMapping("/moto/{id}")
+    public String buscarMoto(@PathVariable Long id, Model model){
+        var motorcycle = motorcycleService.getMotorcycleById(id);
+
+        if (motorcycle == null) {
+            return "redirect:/dashboard";
+        }
+        model.addAttribute("motorcycle", motorcycle);
+        String base64 = qrCode.generateQRCode(motorcycle.getIdMotorcycle());
+        model.addAttribute("base64", base64);
+        return "dashboard-moto";
     }
 
 }

@@ -13,7 +13,33 @@
 </head>
 <body class="p-8">
 <main class="container mx-auto max-w-6xl p-8 rounded-lg shadow-xl">
-    <h1 class="text-4xl font-bold text-center mb-10">Dashboard Mottu</h1>
+
+    <h1 class="text-4xl font-bold text-center mb-6">Dashboard Mottu</h1>
+
+    <div class="flex justify-end mb-10">
+        <a th:href="@{/moto/form}" class="btn btn-primary">
+            Cadastrar Nova Moto
+        </a>
+    </div>
+
+    <div th:if="${qrCodeBase64}" class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body text-center">
+            <h2 class="card-title justify-center">QR Code da Motocicleta Cadastrada</h2>
+            <p class="text-lg text-gray-400">Escaneie o código para o gerenciamento da moto.</p>
+            <figure class="mt-4">
+                <img th:src="'data:image/png;base64,' + ${qrCodeBase64}" alt="QR Code da motocicleta" class="mx-auto w-48 h-48" />
+            </figure>
+
+            <div th:if="${message}" class="alert alert-success mt-4">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 1a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <span th:text="${message}"></span>
+                </div>
+            </div>
+
+            <a href="/dashboard" class="btn btn-sm btn-ghost mt-4">OK</a>
+        </div>
+    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div th:each="department : ${departments}" class="card w-full bg-base-100 shadow-xl">
@@ -48,14 +74,13 @@
                                  th:classappend="${parking.occupied} ? 'badge-error' : 'badge-success'"
                                  class="badge badge-lg text-white p-4 text-center">
                                 <p class="font-bold text-lg" th:text="${parking.code}"></p>
-                                <p class="text-sm" th:text="${parking.occupied} ? 'Ocupada' : 'Livre'"></p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <a th:href="@{'/dashboard/' + ${department.id}}" class="mt-4 inline-block w-full text-center px-4 py-2 btn btn-primary">
+                    <a th:href="@{'/dashboard/details/' + ${department.id}}" class="mt-4 inline-block w-full text-center px-4 py-2 btn btn-primary">
                         Ver detales do Departamento
                     </a>
                 </div>

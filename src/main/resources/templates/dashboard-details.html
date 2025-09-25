@@ -48,11 +48,13 @@
         </div>
 
         <div class="flex flex-wrap gap-4">
-            <div th:each="parking : ${allParkingSpaces}" th:if="${parking.department.id == department.id}"
-                 th:classappend="${parking.occupied} ? 'badge-error' : 'badge-success'"
-                 class="badge badge-lg text-white p-4 text-center">
+            <div th:each="parking : ${allParkingSpaces}"
+                 th:if="${parking.department.id == department.id}"
+                 th:classappend="${parking.occupied} ? 'bg-red-500' : 'bg-green-500'"
+                 class="flex flex-col justify-center items-center w-24 h-24 rounded-lg text-white shadow-md">
+
                 <p class="font-bold text-lg" th:text="${parking.code}"></p>
-                <p class="text-sm" th:text="${parking.occupied} ? 'Ocupada' : 'Livre'"></p>
+                <p class="text-sm" th:text="${parking.occupied} ? ${parking.getMotorcycle().plate} : ''"></p>
             </div>
         </div>
     </div>
