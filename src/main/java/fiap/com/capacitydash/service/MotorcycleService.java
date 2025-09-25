@@ -30,4 +30,21 @@ public class MotorcycleService {
         return repository.save(motorcycle);
     }
 
+
+    public Motorcycle updateMotorcycle(Long id, Motorcycle motorcycle) {
+        Motorcycle motorcycleAntiga = getMotorcycleById(id);
+        Motorcycle motorcycleAtualizada = Motorcycle.builder()
+                .idMotorcycle(motorcycleAntiga.getIdMotorcycle())
+                .plate(motorcycle.getPlate() != null ? motorcycle.getPlate() : motorcycleAntiga.getPlate())
+                .model(motorcycle.getModel() != null ? motorcycle.getModel() : motorcycleAntiga.getModel())
+                .color(motorcycle.getColor() != null ? motorcycle.getColor() : motorcycleAntiga.getColor())
+                .parkingSpace(motorcycle.getParkingSpace() != null ? motorcycle.getParkingSpace() : motorcycleAntiga.getParkingSpace())
+                .build();
+        return repository.save(motorcycleAtualizada);
+    }
+
+    public Motorcycle findByPlate(String plate){
+        return repository.findByPlate(plate);
+    }
+
 }

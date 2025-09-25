@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-theme="halloween">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Movimento</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="p-8">
+<main class="container mx-auto max-w-2xl p-8 rounded-lg shadow-xl">
+    <a href="/dashboard" class="btn btn-ghost mb-6">← Voltar para a Dashboard</a>
+
+    <h1 class="text-4xl font-bold text-center mb-10">Registrar Movimento</h1>
+
+    <form th:action="@{/movement/register}" method="post" class="space-y-6">
+
+        <div class="form-control">
+            <label for="plate" class="label">
+                <span class="label-text">Placa da Motocicleta</span>
+            </label>
+            <input type="text" id="plate" name="motorcyclePlate" placeholder="Placa da moto (Ex: ABC-1234)" class="input input-bordered w-full" required/>
+        </div>
+
+        <div class="form-control">
+            <label for="parkingCode" class="label">
+                <span class="label-text">Código da Vaga</span>
+            </label>
+            <input type="text" id="parkingCode" name="parkingCode" placeholder="Código da vaga (Ex: D-01)" class="input input-bordered w-full" required/>
+        </div>
+
+        <div class="form-control">
+            <label for="movementType" class="label">
+                <span class="label-text">Tipo de Movimento</span>
+            </label>
+            <select id="movementType" name="movementType" class="select select-bordered w-full" required>
+                <option value="ENTRADA">Entrada</option>
+                <option value="SAIDA">Saída</option>
+            </select>
+        </div>
+
+        <div class="pt-4">
+            <button type="submit" class="btn btn-primary w-full">Registrar</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

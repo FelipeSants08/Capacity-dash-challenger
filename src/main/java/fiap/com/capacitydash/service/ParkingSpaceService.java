@@ -22,17 +22,21 @@ public class ParkingSpaceService {
                 .orElseThrow(() -> new RuntimeException("ID não encontrado"));
     }
 
-    public void verificarOcupacao(Long idParkingSpace) {
-        ParkingSpace parkingSpace = findById(idParkingSpace);
-        if (parkingSpace.getMotorcycle() != null){
-            parkingSpace.setOccupied(true);
-        }
-        else {
-            parkingSpace.setOccupied(false);
-        }
-        parkingSpaceRepository.save(parkingSpace);
+    public ParkingSpace update(Long id,ParkingSpace parkingSpace) {
+        ParkingSpace parkingSpaceAntigo = findById(id);
+        ParkingSpace parkingSpaceAtualizado = ParkingSpace.builder()
+                .parkingSpaceId(parkingSpaceAntigo.getParkingSpaceId())
+                .department(parkingSpace.getDepartment() != null ? parkingSpace.getDepartment() : parkingSpaceAntigo.getDepartment())
+                .motorcycle(parkingSpace.getMotorcycle() != null ? parkingSpace.getMotorcycle() : parkingSpaceAntigo.getMotorcycle())
+                .occupied(parkingSpace.getOccupied() != null ? parkingSpace.getOccupied() : parkingSpaceAntigo.getOccupied())
+                .code(parkingSpace.getCode() != null ? parkingSpace.getCode() : parkingSpaceAntigo.getCode())
+                .build();
+        return parkingSpaceRepository.save(parkingSpaceAtualizado);
     }
 
+    public ParkingSpace findByCode(String code) {
+        return parkingSpaceRepository.findByCode(code);
+    }
 
 
 }
