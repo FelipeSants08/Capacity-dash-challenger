@@ -1,6 +1,9 @@
 package fiap.com.capacitydash.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,8 +20,12 @@ public class Motorcycle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idMotorcycle;
 
+    @NotBlank(message = "A placa é obrigatória.")
+    @Size(min = 7, max = 7, message = "A placa deve ter exatamente 7 caracteres.")
+    @JoinColumn(unique = true)
     private String plate;
 
+    @NotNull
     private String model;
 
     private String color;

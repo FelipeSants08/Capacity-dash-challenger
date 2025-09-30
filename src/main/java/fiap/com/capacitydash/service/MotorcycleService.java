@@ -2,6 +2,7 @@ package fiap.com.capacitydash.service;
 
 import fiap.com.capacitydash.model.Motorcycle;
 import fiap.com.capacitydash.repository.MotorcycleRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,6 @@ import java.util.List;
 public class MotorcycleService {
 
     private final MotorcycleRepository repository;
-
     private final QrCodeService qrCodeService;
 
     public List<Motorcycle> getAllMotorcycles(){
@@ -21,7 +21,7 @@ public class MotorcycleService {
 
     public Motorcycle getMotorcycleById(long id){
          Motorcycle moto = repository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("ID não encontrado"));
+                    .orElseThrow(() -> new EntityNotFoundException("ID não encontrado"));
          qrCodeService.generateQRCode(moto.getIdMotorcycle());
          return moto;
     }
@@ -30,6 +30,13 @@ public class MotorcycleService {
         return repository.save(motorcycle);
     }
 
+    public void deleteById(long id){
+        repository.delete(getMotorcycleById(id));
+    }
+
+    public boolean existsByPlate(String placa){
+        return repository.existsByPlate(placa);
+    }
 
     public Motorcycle updateMotorcycle(Long id, Motorcycle motorcycle) {
         Motorcycle motorcycleAntiga = getMotorcycleById(id);

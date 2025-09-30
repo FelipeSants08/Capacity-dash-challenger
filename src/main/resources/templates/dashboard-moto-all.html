@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-theme="halloween">
+<head>
+    <meta charset="UTF-8">
+    <title>Todas as Motocicletas</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="p-8">
+<main class="container mx-auto max-w-6xl p-8 rounded-lg shadow-xl">
+    <a href="/dashboard" class="btn btn-ghost mb-6">← Voltar para a Dashboard</a>
+
+    <h1 class="text-4xl font-bold text-center mb-10">Todas as Motocicletas</h1>
+
+    <div th:if="${message}" class="alert alert-success shadow-lg mb-4">
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span th:text="${message}"></span>
+        </div>
+    </div>
+
+    <div th:if="${error}" class="alert alert-error shadow-lg mb-4">
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span th:text="${error}"></span>
+        </div>
+    </div>
+
+    <div th:if="${motorcycles.isEmpty()}" class="alert alert-warning shadow-lg text-center">
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span class="font-bold">Nenhuma motocicleta cadastrada.</span>
+        </div>
+    </div>
+    <div class="flex justify-between items-center mb-10">
+        <form id="searchForm" class="flex gap-4">
+            <input type="text" id="motorcycleId" placeholder="Buscar moto por Placa" class="input input-bordered w-full max-w-xs" required min="1" />
+            <button type="submit" class="btn btn-secondary">Buscar Moto</button>
+        </form>
+    </div>
+    <div th:unless="${motorcycles.isEmpty()}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div th:each="moto : ${motorcycles}" class="card w-full bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title text-2xl" th:text="${moto.model}">Modelo da Moto</h2>
+                <div class="divider"></div>
+
+                <p class="text-lg">
+                    <span class="font-bold">Placa:</span> <span th:text="${moto.plate}"></span>
+                </p>
+                <p class="text-lg">
+                    <span class="font-bold">Cor:</span> <span th:text="${moto.color}"></span>
+                </p>
+
+                <div th:if="${moto.parkingSpace != null}">
+                    <div class="alert alert-info mt-4 shadow-lg">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <div>
+                                <h3 class="font-bold">Localização</h3>
+                                <div class="text-xs">
+                                    <p>Vaga: <span th:text="${moto.parkingSpace.code}" class="font-bold"></span></p>
+                                    <p>Departamento: <span th:text="${moto.parkingSpace.department.name}"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div th:unless="${moto.parkingSpace != null}">
+                    <div class="alert alert-warning mt-4 shadow-lg">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <div class="text-xs">
+                                <p class="font-bold">Moto em trânsito</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-actions justify-end mt-4">
+                    <a th:href="@{'/dashboard/moto/' + ${moto.plate}}" class="btn btn-primary btn-sm">Ver Detalhes</a>
+
+                    <form th:action="@{'/dashboard/moto/' + ${moto.idMotorcycle}}" th:method="POST" onsubmit="return confirm('Tem certeza que deseja deletar esta motocicleta?');">
+                        <input type="hidden" name="_method" value="delete" />
+                        <button type="submit" class="btn btn-error btn-sm">Deletar</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var id = document.getElementById('motorcycleId').value;
+        if (id) {
+            window.location.href = '/dashboard/moto/' + id;
+        }
+    });
+</script>
+
+</body>
+</html>

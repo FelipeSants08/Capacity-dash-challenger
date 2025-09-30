@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/moto/form")
-public class FormController {
+public class FormMotoController {
 
     final MotorcycleService motorcycleService;
     final QrCodeService qrCode;
@@ -26,12 +26,23 @@ public class FormController {
     }
     @PostMapping
     public String createFormMoto(@Valid Motorcycle motorcycle, BindingResult result, RedirectAttributes redirect){
-        if(result.hasErrors()) return "form";
+
+
+        if(result.hasErrors()) {
+            return "form";
+        }
+
+        if (motorcycleService.existsByPlate(motorcycle.getPlate())) {
+            result.rejectValue("plate", "error.motorcycle", "Esta placa já está cadastrada.");
+            return "form";
+        }
 
         Motorcycle motorcycleSave = motorcycleService.save(motorcycle);
         String qrCodeBase64 = qrCode.generateQRCode(motorcycleSave.getIdMotorcycle());
+
         redirect.addFlashAttribute("qrCodeBase64", qrCodeBase64);
         redirect.addFlashAttribute("message", "Motocicleta cadastrada com sucesso!");
+
         return "redirect:/dashboard";
     }
 

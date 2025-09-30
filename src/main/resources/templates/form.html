@@ -23,21 +23,41 @@
             <label for="plate" class="label">
                 <span class="label-text">Placa</span>
             </label>
-            <input type="text" id="plate" th:field="*{plate}" placeholder="Ex: ABC-1234" class="input input-bordered w-full" required/>
+            <input type="text"
+                   id="plate"
+                   th:field="*{plate}"
+                   placeholder="Ex: ABC0A00 (7 caracteres)"
+                   maxlength="7"
+                   class="input input-bordered w-full"
+                   th:errorclass="input-error" /><div class="label">
+                <span th:if="${#fields.hasErrors('plate')}"
+                      th:errors="*{plate}"
+                      class="label-text-alt text-error font-bold">Erro de Validação</span>
+        </div>
         </div>
 
         <div class="form-control">
             <label for="model" class="label">
                 <span class="label-text">Modelo</span>
             </label>
-            <input type="text" id="model" th:field="*{model}" placeholder="Ex: Honda CB 500F" class="input input-bordered w-full" required/>
+            <input type="text" id="model" th:field="*{model}" placeholder="Ex: Honda CB 500F" class="input input-bordered w-full" required th:errorclass="input-error"/>
+            <div class="label">
+                <span th:if="${#fields.hasErrors('model')}"
+                      th:errors="*{model}"
+                      class="label-text-alt text-error font-bold">Erro de Validação</span>
+            </div>
         </div>
 
         <div class="form-control">
             <label for="color" class="label">
                 <span class="label-text">Cor</span>
             </label>
-            <input type="text" id="color" th:field="*{color}" placeholder="Ex: Vermelha" class="input input-bordered w-full" required/>
+            <input type="text" id="color" th:field="*{color}" placeholder="Ex: Vermelha" class="input input-bordered w-full" required th:errorclass="input-error"/>
+            <div class="label">
+                <span th:if="${#fields.hasErrors('color')}"
+                      th:errors="*{color}"
+                      class="label-text-alt text-error font-bold">Erro de Validação</span>
+            </div>
         </div>
 
         <div class="pt-4">
