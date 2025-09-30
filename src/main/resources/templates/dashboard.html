@@ -17,12 +17,12 @@
     <h1 class="text-4xl font-bold text-center mb-6">Dashboard Mottu</h1>
 
     <div class="flex justify-between items-center mb-10">
-        <form id="searchForm" class="flex gap-4">
-            <input type="number" id="motorcycleId" placeholder="Buscar moto por ID" class="input input-bordered w-full max-w-xs" required min="1" />
-            <button type="submit" class="btn btn-secondary">Buscar Moto</button>
-        </form>
 
+        <a th:href="@{/dashboard/moto}" class="flex gap-4 btn btn-secondary">
+            Ver Motos
+        </a>
         <div class="flex gap-4">
+
             <a th:href="@{/movement/form}" class="btn btn-neutral">
                 Registrar Movimento
             </a>
@@ -46,31 +46,25 @@
         </div>
     </div>
 
-    <div th:if="${qrCodeBase64}" class="card bg-base-100 shadow-xl mb-6">
-        <div class="card-body text-center">
-            <h2 class="card-title justify-center">QR Code da Motocicleta Cadastrada</h2>
-            <p class="text-lg text-gray-400">Escaneie o código para o gerenciamento da moto.</p>
-            <figure class="mt-4">
-                <img th:src="'data:image/png;base64,' + ${qrCodeBase64}" alt="QR Code da motocicleta" class="mx-auto w-48 h-48" />
-            </figure>
-
-            <a href="/dashboard" class="btn btn-sm btn-ghost mt-4">OK</a>
-        </div>
-    </div>
-
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div th:each="department : ${departments}" class="card w-full bg-base-100 shadow-xl">
             <div class="card-body">
                 <h2 th:text="${department.name}" class="card-title text-2xl">Nome do Departamento</h2>
                 <p th:text="${department.description}">Descrição</p>
 
-                <div th:if="${!#lists.isEmpty(department.alerts)}" class="alert alert-error mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    <span>Alertas Ativos: <span th:text="${#lists.size(department.alerts)}" class="badge badge-lg badge-error font-normal"></span></span>
-                </div>
-                <div th:if="${#lists.isEmpty(department.alerts)}" class="alert alert-success mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    <span>Nenhum Alerta Encontrado</span>
+                <div th:with="activeCount=${activeAlertsCount.get(department.id)}">
+                    <div th:if="${activeCount > 0}" class="alert alert-error mb-4">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>Alertas Ativos:<span th:text="${activeCount}" class="badge badge-lg badge-error font-normal"></span></span>
+                        </div>
+                    </div>
+                    <div th:if="${activeCount == 0}" class="alert alert-success mb-4">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>Nenhum Alerta Ativo Encontrado</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="collapse collapse-plus bg-base-200 mt-4">
@@ -106,15 +100,7 @@
     </div>
 </main>
 
-<script>
-    document.getElementById('searchForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        var id = document.getElementById('motorcycleId').value;
-        if (id) {
-            window.location.href = '/dashboard/moto/' + id;
-        }
-    });
-</script>
+
 
 </body>
 </html>

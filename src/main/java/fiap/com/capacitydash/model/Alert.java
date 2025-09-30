@@ -24,6 +24,8 @@ public class Alert {
 
     private LocalDateTime dateTimeAlert;
 
+    private Boolean active;
+
     @ManyToOne
     private Department department;
 

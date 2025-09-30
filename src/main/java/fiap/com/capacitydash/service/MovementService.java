@@ -20,6 +20,8 @@ public class MovementService {
     private final MovementRepository movementRepository;
     private final MotorcycleService motorcycleService;
     private final ParkingSpaceService parkingSpaceService;
+    private final AlertService alertService;
+
 
     public List<Movement> findAll() {
         return movementRepository.findAll();
@@ -34,6 +36,13 @@ public class MovementService {
 
             Motorcycle moto = motorcycleService.findByPlate(place);
             ParkingSpace parkingSpace = parkingSpaceService.findByCode(code);
+            if (moto == null) {
+                throw new IllegalArgumentException("A placa da motocicleta não foi encontrada.");
+            }
+
+            if (parkingSpace == null) {
+                throw new IllegalArgumentException("O código da vaga não foi encontrado.");
+            }
             if (parkingSpace.getOccupied()) {
                 throw new IllegalArgumentException("A vaga já está ocupada.");
             }
@@ -47,6 +56,7 @@ public class MovementService {
             movement.setMotorcycle(moto);
             movement.setDateTimeMovement(LocalDateTime.now());
             parkingSpaceService.update(parkingSpace.getParkingSpaceId(), parkingSpace);
+            alertService.gerarAlertaAutomatico(parkingSpace.getDepartment().getId());
             return movementRepository.save(movement);
     }
 

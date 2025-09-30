@@ -2,6 +2,7 @@ package fiap.com.capacitydash.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,12 +19,15 @@ public class Movement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idMovement;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private MovementType type;
 
+    @NotNull
     @ManyToOne
     private Motorcycle motorcycle;
 
+    @NotNull
     @ManyToOne
     private ParkingSpace parkingSpace;
 
