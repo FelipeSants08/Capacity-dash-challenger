@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" data-theme="halloween">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-theme="halloween" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>DashBoard Mottu</title>
@@ -22,13 +22,19 @@
             Ver Motos
         </a>
         <div class="flex gap-4">
+            <!-- 👇 APENAS ADMIN pode ver este botão -->
+            <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+                <a th:href="@{/movement/form}" class="btn btn-neutral">
+                    Registrar Movimento
+                </a>
+            </div>
 
-            <a th:href="@{/movement/form}" class="btn btn-neutral">
-                Registrar Movimento
-            </a>
-            <a th:href="@{/moto/form}" class="btn btn-primary">
-                Cadastrar Nova Moto
-            </a>
+            <!-- 👇 APENAS ADMIN pode ver este botão -->
+            <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+                <a th:href="@{/moto/form}" class="btn btn-primary">
+                    Cadastrar Nova Moto
+                </a>
+            </div>
         </div>
     </div>
 

@@ -35,13 +35,13 @@ INSERT INTO parking_space (parking_space_id, code, occupied, department_id) VALU
 -- Se 'parking_space_id' tem um valor, a moto está estacionada.
 -- Se 'parking_space_id' é NULL, a moto não está estacionada.
 INSERT INTO motorcycle (id_motorcycle, plate, model, color, parking_space_id) VALUES
-                                                                                  (1, 'ABC-1234', 'Honda Pop 110i', 'Branco', 1),
-                                                                                  (2, 'DEF-5678', 'Honda Biz 125', 'Vermelho', 2),
-                                                                                  (3, 'GHI-9012', 'Honda Cargo', 'Azul', 3),
-                                                                                  (4, 'JKL-3456', 'Honda CG 160 Fan', 'Preto', NULL), -- Moto em uso
-                                                                                  (5, 'MNO-7890', 'Yamaha Fazer 250', 'Amarelo', 6),
-                                                                                  (6, 'PQR-1234', 'Yamaha Lander', 'Verde', 7),
-                                                                                  (7, 'STU-5678', 'Honda CG 160 Fan', 'Preto', NULL), -- Moto em uso
-                                                                                  (8, 'VWX-9012', 'Honda Biz 125', 'Vermelho', 10),
-                                                                                  (9, 'YZA-3456', 'Honda Pop 110i', 'Branco', 11),
-                                                                                  (10, 'BCD-7890', 'Honda CG 160 Titan', 'Prata', 16);
+                                                                                  (1, 'ABC1234', 'Honda Pop 110i', 'Branco', 1),
+                                                                                  (2, 'DEF5678', 'Honda Biz 125', 'Vermelho', 2),
+                                                                                  (3, 'GHI9012', 'Honda Cargo', 'Azul', 3),
+                                                                                  (4, 'JKL3456', 'Honda CG 160 Fan', 'Preto', NULL), -- Moto em uso
+                                                                                  (5, 'MNO7890', 'Yamaha Fazer 250', 'Amarelo', 6),
+                                                                                  (6, 'PQR1234', 'Yamaha Lander', 'Verde', 7),
+                                                                                  (7, 'STU5678', 'Honda CG 160 Fan', 'Preto', NULL), -- Moto em uso
+                                                                                  (8, 'VWX9012', 'Honda Biz 125', 'Vermelho', 10),
+                                                                                  (9, 'YZA3456', 'Honda Pop 110i', 'Branco', 11),
+                                                                                  (10, 'BCD7890', 'Honda CG 160 Titan', 'Prata', 16);
