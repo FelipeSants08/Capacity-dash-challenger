@@ -3,6 +3,7 @@ package fiap.com.capacitydash.service;
 import fiap.com.capacitydash.model.Motorcycle;
 import fiap.com.capacitydash.repository.MotorcycleRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,8 @@ public class MotorcycleService {
     }
 
     public Motorcycle getMotorcycleById(long id){
-         Motorcycle moto = repository.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("ID não encontrado"));
-         qrCodeService.generateQRCode(moto.getIdMotorcycle());
-         return moto;
+        return repository.findById(id)
+                   .orElseThrow(() -> new EntityNotFoundException("ID não encontrado"));
     }
 
     public Motorcycle save(Motorcycle motorcycle) {

@@ -4,6 +4,7 @@ import fiap.com.capacitydash.model.Motorcycle;
 import fiap.com.capacitydash.repository.MotorcycleRepository;
 import fiap.com.capacitydash.service.MotorcycleService;
 import fiap.com.capacitydash.service.QrCodeService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +26,7 @@ public class MotoController {
     private final QrCodeService qrCode;
 
     @GetMapping("/moto/{plate}")
-    public String buscarMoto(@PathVariable String plate, Model model, RedirectAttributes redirectAttributes) {
+    public String buscarMoto(@PathVariable String plate, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
 
         Motorcycle motorcycle = motorcycleService.findByPlate(plate);
 
@@ -33,9 +34,10 @@ public class MotoController {
             redirectAttributes.addFlashAttribute("error", "Motocicleta com a placa: " + plate + " não encontrada.");
             return "redirect:/dashboard";
         }
-
+        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        String motoUrl = baseUrl + "/dashboard/moto/" + motorcycle.getPlate();
         model.addAttribute("motorcycle", motorcycle);
-        String base64 = qrCode.generateQRCode(motorcycle.getIdMotorcycle());
+        String base64 = qrCode.generateQRCode(motoUrl);
         model.addAttribute("base64", base64);
 
         return "dashboard-moto";

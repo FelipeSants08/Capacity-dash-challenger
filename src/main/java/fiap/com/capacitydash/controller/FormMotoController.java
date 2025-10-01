@@ -3,6 +3,7 @@ package fiap.com.capacitydash.controller;
 import fiap.com.capacitydash.model.Motorcycle;
 import fiap.com.capacitydash.service.MotorcycleService;
 import fiap.com.capacitydash.service.QrCodeService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,7 @@ public class FormMotoController {
         return "form";
     }
     @PostMapping
-    public String createFormMoto(@Valid Motorcycle motorcycle, BindingResult result, RedirectAttributes redirect){
+    public String createFormMoto(@Valid Motorcycle motorcycle, BindingResult result, RedirectAttributes redirect, HttpServletRequest request){
 
 
         if(result.hasErrors()) {
@@ -37,9 +38,10 @@ public class FormMotoController {
             return "form";
         }
 
+        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         Motorcycle motorcycleSave = motorcycleService.save(motorcycle);
-        String qrCodeBase64 = qrCode.generateQRCode(motorcycleSave.getIdMotorcycle());
-
+        String motoUrl = baseUrl + "/dashboard/moto/" + motorcycleSave.getPlate();
+        String qrCodeBase64 = qrCode.generateQRCode(motoUrl);
         redirect.addFlashAttribute("qrCodeBase64", qrCodeBase64);
         redirect.addFlashAttribute("message", "Motocicleta cadastrada com sucesso!");
 

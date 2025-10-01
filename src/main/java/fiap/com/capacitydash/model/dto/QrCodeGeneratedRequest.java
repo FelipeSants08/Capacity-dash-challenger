@@ -1,4 +1,4 @@
 package fiap.com.capacitydash.model.dto;
 
-public record QrCodeGeneratedRequest(Long id) {
+public record QrCodeGeneratedRequest(String url) {
 }
