@@ -23,7 +23,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         // 👇 APENAS ADMIN - Criar e Deletar
                         .requestMatchers("/moto/form/**", "/dashboard/moto/delete/**", "/movement/form").hasAuthority("ROLE_ADMIN")
-
+                        .requestMatchers("dashboard/moto/GHI9012").permitAll()
                         // 👇 ADMIN E USER - Visualizar
                         .requestMatchers("/dashboard", "/dashboard/**", "/moto/**", "/movement/register").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
 
@@ -31,6 +31,12 @@ public class SecurityConfiguration {
                 )
                 .oauth2Login(login -> login
                         .successHandler(customAuthenticationSuccessHandler)
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
                 )
                 .addFilterAfter(roleUpdateFilter, OAuth2LoginAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
