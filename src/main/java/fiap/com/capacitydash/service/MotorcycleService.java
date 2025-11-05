@@ -1,6 +1,7 @@
 package fiap.com.capacitydash.service;
 
 import fiap.com.capacitydash.model.Motorcycle;
+import fiap.com.capacitydash.model.ParkingSpace;
 import fiap.com.capacitydash.repository.MotorcycleRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +15,7 @@ import java.util.List;
 public class MotorcycleService {
 
     private final MotorcycleRepository repository;
-    private final QrCodeService qrCodeService;
+    private final ParkingSpaceService parkingSpaceService;
 
     public List<Motorcycle> getAllMotorcycles(){
         return repository.findAll();
@@ -30,7 +31,15 @@ public class MotorcycleService {
     }
 
     public void deleteById(long id){
-        repository.delete(getMotorcycleById(id));
+        Motorcycle motorcycle = getMotorcycleById(id);
+        if(motorcycle.getParkingSpace() != null){
+            ParkingSpace space = motorcycle.getParkingSpace();
+            space.setMotorcycle(null);
+            space.setOccupied(false);
+            motorcycle.setParkingSpace(null);
+            parkingSpaceService.update(space.getParkingSpaceId(), space);
+        }
+        repository.delete(motorcycle);
     }
 
     public boolean existsByPlate(String placa){

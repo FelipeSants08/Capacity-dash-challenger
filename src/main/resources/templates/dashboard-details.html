@@ -54,7 +54,7 @@
                  class="flex flex-col justify-center items-center w-24 h-24 rounded-lg text-white shadow-md">
 
                 <p class="font-bold text-lg" th:text="${parking.code}"></p>
-                <p class="text-sm" th:text="${parking.occupied} ? ${parking.getMotorcycle().plate} : ''"></p>
+                <p class="text-sm" th:if="${parking.motorcycle}" th:text="${parking.motorcycle.plate}"></p>
             </div>
         </div>
     </div>

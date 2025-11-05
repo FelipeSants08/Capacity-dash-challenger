@@ -26,7 +26,7 @@ public class FormMotoController {
         return "form";
     }
     @PostMapping
-    public String createFormMoto(@Valid Motorcycle motorcycle, BindingResult result, RedirectAttributes redirect, HttpServletRequest request){
+    public String createFormMoto(@Valid Motorcycle motorcycle, BindingResult result, RedirectAttributes redirect){
 
 
         if(result.hasErrors()) {
@@ -38,10 +38,9 @@ public class FormMotoController {
             return "form";
         }
 
-        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-        Motorcycle motorcycleSave = motorcycleService.save(motorcycle);
-        String motoUrl = baseUrl + "/dashboard/moto/" + motorcycleSave.getPlate();
-        String qrCodeBase64 = qrCode.generateQRCode(motoUrl);
+
+        motorcycleService.save(motorcycle);
+        String qrCodeBase64 = qrCode.generateQRCodeMoto(motorcycle);
         redirect.addFlashAttribute("qrCodeBase64", qrCodeBase64);
         redirect.addFlashAttribute("message", "Motocicleta cadastrada com sucesso!");
 

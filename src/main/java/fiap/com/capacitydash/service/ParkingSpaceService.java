@@ -28,7 +28,7 @@ public class ParkingSpaceService {
                 .parkingSpaceId(parkingSpaceAntigo.getParkingSpaceId())
                 .department(parkingSpace.getDepartment() != null ? parkingSpace.getDepartment() : parkingSpaceAntigo.getDepartment())
                 .motorcycle(parkingSpace.getMotorcycle() != null ? parkingSpace.getMotorcycle() : parkingSpaceAntigo.getMotorcycle())
-                .occupied(parkingSpace.getOccupied() != null ? parkingSpace.getOccupied() : parkingSpaceAntigo.getOccupied())
+                .occupied(parkingSpace.getOccupied() == null ? parkingSpaceAntigo.getOccupied() : parkingSpace.getOccupied())
                 .code(parkingSpace.getCode() != null ? parkingSpace.getCode() : parkingSpaceAntigo.getCode())
                 .build();
         return parkingSpaceRepository.save(parkingSpaceAtualizado);
