@@ -21,10 +21,9 @@ public class SecurityConfiguration {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
-                        // 👇 APENAS ADMIN - Criar e Deletar
+
                         .requestMatchers("/moto/form/**", "/dashboard/moto/delete/**", "/movement/form").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("dashboard/moto/GHI9012").permitAll()
-                        // 👇 ADMIN E USER - Visualizar
+
                         .requestMatchers("/dashboard", "/dashboard/**", "/moto/**", "/movement/register").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
 
                         .anyRequest().authenticated()
@@ -39,7 +38,6 @@ public class SecurityConfiguration {
                         .permitAll()
                 )
                 .addFilterAfter(roleUpdateFilter, OAuth2LoginAuthenticationFilter.class)
-                .csrf(csrf -> csrf.disable())
                 .build();
     }
 }
